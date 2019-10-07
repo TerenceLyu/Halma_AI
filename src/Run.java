@@ -19,9 +19,6 @@ public class Run
 		for (int i = 0; i < 16; i++)
 		{
 			board[i] = input.readLine().toCharArray();
-			
-			
-			
 		}
 		
 		
