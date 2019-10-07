@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="137ca089-711f-4fa8-97a2-6345ecb27573" name="Default Changelist" comment="" />
+    <list default="true" id="137ca089-711f-4fa8-97a2-6345ecb27573" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/Run.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Run.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,24 +22,12 @@
     <fileColor scope="Non-Project Files (Material Palenight)" color="2f2e43" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Run.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="28" column="8" lean-forward="true" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../561/csci561_hw1/src/homework.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="114" selection-start-line="114" selection-end-line="115" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
+            <state relative-caret-position="231">
+              <caret line="23" column="12" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -61,7 +51,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="590" />
     <option name="width" value="1978" />
     <option name="height" value="1408" />
@@ -72,8 +62,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -85,6 +73,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -158,25 +148,24 @@
       <option name="presentableId" value="Default" />
       <updated>1570391413824</updated>
       <workItem from="1570391416617" duration="3888000" />
+      <workItem from="1570485300566" duration="611000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3888000" />
+    <option name="totallyTimeSpent" value="4499000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1416" extended-state="7" />
+    <frame x="-6" y="-6" width="1613" height="873" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.11646587" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.11810513" />
       <window_info id="Nl-Palette" order="1" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Capture Tool" order="3" />
       <window_info id="Designer" order="4" />
       <window_info id="UI Designer" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32964224" />
@@ -188,10 +177,10 @@
       <window_info anchor="bottom" id="Messages" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Terminal" order="10" />
-      <window_info anchor="right" id="Maven" />
-      <window_info anchor="right" id="SciView" />
+      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="12" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Structure" order="1" side_tool="true" visible="true" weight="0.18955824" />
+      <window_info anchor="right" id="Structure" order="1" side_tool="true" visible="true" weight="0.18948735" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
       <window_info anchor="right" id="Palette" order="4" />
@@ -201,26 +190,19 @@
       <window_info anchor="right" id="Properties" order="8" />
       <window_info anchor="right" id="Database" order="9" />
       <window_info anchor="right" id="Theme Preview" order="10" />
+      <window_info anchor="right" id="Maven" order="11" />
+      <window_info anchor="right" id="SciView" order="12" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../561/csci561_hw1/src/homework.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="114" selection-start-line="114" selection-end-line="115" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../561/csci561_hw1/src/homework.java" />
     <entry file="file://$PROJECT_DIR$/src/Run.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="28" column="8" lean-forward="true" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
+        <state relative-caret-position="231">
+          <caret line="23" column="12" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
         </state>
       </provider>
     </entry>
