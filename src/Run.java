@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Botong Lyu
@@ -23,8 +24,7 @@ public class Run
 			new Point(14,12), new Point(13,12), new Point(15,11), new Point(14,11)};
 	public static void main(String[] args) throws Exception
 	{
-		BufferedReader input =
-				new BufferedReader(new FileReader("input.txt"));
+		BufferedReader input = new BufferedReader(new FileReader("input.txt"));
 		String mode = input.readLine();
 		String player = input.readLine();
 		double timeLeft = Double.parseDouble(input.readLine());
@@ -35,9 +35,12 @@ public class Run
 		}
 		
 		HashMap<Point, Integer> board = buildBoard(charBoard);
-		System.out.println(eval(board, 'B'));
-		System.out.println(eval(board, 'W'));
+//		System.out.println(eval(board, 'B'));
+//		System.out.println(eval(board, 'W'));
 		
+//		String s = generateMove(board, new Point(2, 2), 1).stream().map(Object::toString)
+//				.collect(Collectors.joining(", "));
+//		System.out.println(s);
 		BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
 		
 //		for (Map.Entry<Point, Integer> e:board.entrySet())
@@ -90,6 +93,37 @@ public class Run
 					}else
 					{
 						//check if a hop is possible
+						Point hop = new Point(piece.x + 2*i, piece.y + 2*j);
+						if (!board.containsKey(hop))
+						{
+							ArrayList<Point> moves = new ArrayList<>();
+							moves.add(piece);
+							moves.add(hop);
+							listsOfMoves.add(moves);
+							continousHop(listsOfMoves, moves, board);
+						}
+					}
+				}
+			}
+		}
+		return listsOfMoves;
+	}
+	private static void continousHop(ArrayList<ArrayList<Point>> LOM, ArrayList<Point> LM, HashMap<Point, Integer> board)
+	{
+		Point current = LM.get(LM.size()-1);
+		for (int i = -1; i < 2; i++)
+		{
+			for (int j = -1; j < 2; j++)
+			{
+				Point p = new Point(current.x-i, current.y-j);
+				if (board.containsKey(p)){
+					Point hop = new Point(current.x-2*i, current.y-2*j);
+					if (!board.containsKey(hop) && !LM.contains(hop))
+					{
+						ArrayList<Point> move = (ArrayList<Point>)LM.clone();
+						move.add(hop);
+						LOM.add(move);
+						continousHop(LOM, move, board);
 					}
 				}
 			}
@@ -103,7 +137,7 @@ public class Run
 			for (int j = 0; j < SIZE; j++)
 			{
 				if (cBoard[i][j] != '.'){
-					board.put(new Point(i, j), (cBoard[i][j] == 'B') ? 0:1);
+					board.put(new Point(j, i), (cBoard[i][j] == 'B') ? 0:1);
 				}
 			}
 		}
