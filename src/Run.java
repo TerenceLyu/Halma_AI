@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class Run
 {
 	public final static int SIZE = 16;
+	public final static int DEPTH = 4;
 	final static Point[] bBase={new Point(0,0), new Point(1,0), new Point(2,0),
 			new Point(3,0), new Point(4,0), new Point(0,1), new Point(1,1),
 			new Point(2,1), new Point(3,1), new Point(4,1), new Point(0,2),
@@ -26,7 +27,7 @@ public class Run
 	{
 		BufferedReader input = new BufferedReader(new FileReader("input.txt"));
 		String mode = input.readLine();
-		String player = input.readLine();
+		int player = (input.readLine().equals("BLACK")) ? 0:1;
 		double timeLeft = Double.parseDouble(input.readLine());
 		char[][] charBoard = new char[SIZE][SIZE];
 		for (int i = 0; i < SIZE; i++)
@@ -37,7 +38,7 @@ public class Run
 		HashMap<Point, Integer> board = buildBoard(charBoard);
 //		System.out.println(eval(board, 'B'));
 //		System.out.println(eval(board, 'W'));
-		
+
 //		String s = generateMove(board, new Point(2, 2), 1).stream().map(Object::toString)
 //				.collect(Collectors.joining(", "));
 //		System.out.println(s);
@@ -49,7 +50,90 @@ public class Run
 //		}
 		writer.close();
 	}
-	private static int eval(HashMap<Point, Integer> board, char player)
+	private static ArrayList<Point> treeSearch(HashMap<Point, Integer> board, int player)
+	{
+		int max = -1;
+		ArrayList<Point> nextMove = new ArrayList<>();
+		for (Map.Entry<Point, Integer> e:board.entrySet())
+		{
+			if (e.getValue() == player)
+			{
+				ArrayList<ArrayList<Point>> moves = generateMove(board, e.getKey(), player);
+				for (ArrayList<Point> move:moves)
+				{
+					HashMap<Point, Integer> nBoard = (HashMap<Point, Integer>)board.clone();
+					nBoard.put(move.get(move.size()-1), board.get(move.get(0)));
+					nBoard.remove(move.get(0));
+					int value = recSearch(nBoard, (player+1)%2, 0, max, 10000);
+					if (value>max)
+					{
+						max = value;
+						nextMove = move;
+					}
+				}
+			}
+		}
+		return nextMove;
+	}
+	private static int recSearch(HashMap<Point, Integer> board, int player, int level, int alpha, int beta)
+	{
+		int value = (level%2 == 0) ? -1:10000;
+		for (Map.Entry<Point, Integer> e:board.entrySet())
+		{
+			if (e.getValue() == player)
+			{
+				ArrayList<ArrayList<Point>> moves = generateMove(board, e.getKey(), player);
+				for (ArrayList<Point> move:moves)
+				{
+					HashMap<Point, Integer> nBoard = (HashMap<Point, Integer>)board.clone();
+					nBoard.put(move.get(move.size()-1), board.get(move.get(0)));
+					nBoard.remove(move.get(0));
+					//check if we are at leaf
+					if (level == DEPTH)
+					{
+						if (level%2 == 0)
+						{
+							//max level
+							value = Math.max(value, eval(nBoard, player));
+						}else
+						{
+							//min level
+							value = Math.min(value, eval(nBoard, player));
+						}
+					}else
+					{
+						if (level%2 == 0)
+						{
+							//max level
+							value = Math.max(value, recSearch(nBoard, (player+1)%2, level+1, value, beta));
+						}else
+						{
+							//min level
+							value = Math.min(value, recSearch(nBoard, (player+1)%2, level+1, alpha, value));
+						}
+					}
+					//compare with either alpha or beta for pruning
+					if (level%2 == 0)
+					{
+						//at max
+						if (value>beta)
+						{
+							return value;
+						}
+					}else
+					{
+						//at min
+						if (value<alpha)
+						{
+							return value;
+						}
+					}
+				}
+			}
+		}
+		return value;
+	}
+	private static int eval(HashMap<Point, Integer> board, int player)
 	{
 		Point[] base = (player=='B') ? wBase:bBase;
 		int score = 0;
@@ -61,12 +145,11 @@ public class Run
 				score += 10;
 			}
 		}
-		int x = (player=='B') ? 15:0;
+		int x = (player==0) ? 15:0;
 		int y = x;
-		int p = (player=='B') ? 0:1;
 		for (Map.Entry<Point, Integer> e:board.entrySet())
 		{
-			if (e.getValue().equals(p))
+			if (e.getValue().equals(player))
 			{
 				score += Math.min(30 - (Math.abs(x-e.getKey().x) + Math.abs(y-e.getKey().y)), 25);
 			}
