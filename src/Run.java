@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Botong Lyu
@@ -47,20 +46,6 @@ public class Run
 //		}
 		writer.close();
 	}
-	private static HashMap<Point, Integer> buildBoard(char[][] cBoard)
-	{
-		HashMap<Point, Integer> board = new HashMap<>(40);
-		for (int i = 0; i < SIZE; i++)
-		{
-			for (int j = 0; j < SIZE; j++)
-			{
-				if (cBoard[i][j] != '.'){
-					board.put(new Point(i, j), (cBoard[i][j] == 'B') ? 0:1);
-				}
-			}
-		}
-		return board;
-	}
 	private static int eval(HashMap<Point, Integer> board, char player)
 	{
 		Point[] base = (player=='B') ? wBase:bBase;
@@ -85,6 +70,46 @@ public class Run
 		}
 		return score-50;
 	}
+	private static ArrayList<ArrayList<Point>> generateMove(HashMap<Point, Integer> board, Point piece, int player)
+	{
+		ArrayList<ArrayList<Point>> listsOfMoves = new ArrayList<>();
+		for (int i = -1; i < 2; i++)
+		{
+			for (int j = -1; j < 2; j++)
+			{
+				if (i!=0||j!=0)
+				{
+					Point target = new Point(piece.x + i, piece.y + j);
+					if (!board.containsKey(target))
+					{
+						//regular moves
+						ArrayList<Point> moves = new ArrayList<>();
+						moves.add(piece);
+						moves.add(target);
+						listsOfMoves.add(moves);
+					}else
+					{
+						//check if a hop is possible
+					}
+				}
+			}
+		}
+	}
+	private static HashMap<Point, Integer> buildBoard(char[][] cBoard)
+	{
+		HashMap<Point, Integer> board = new HashMap<>(40);
+		for (int i = 0; i < SIZE; i++)
+		{
+			for (int j = 0; j < SIZE; j++)
+			{
+				if (cBoard[i][j] != '.'){
+					board.put(new Point(i, j), (cBoard[i][j] == 'B') ? 0:1);
+				}
+			}
+		}
+		return board;
+	}
+	
 }
 //class Board
 //{
