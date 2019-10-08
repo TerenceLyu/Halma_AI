@@ -63,10 +63,11 @@ public class Run
 	}
 	private static int eval(HashMap<Point, Integer> board, char player)
 	{
-		Point[] base = (player=='B') ? bBase:wBase;
+		Point[] base = (player=='B') ? wBase:bBase;
 		int score = 0;
 		for (int i = 0; i < 19; i++)
 		{
+			//each occupied opponent's base grid is worth 10 points
 			if (board.containsKey(base[i]))
 			{
 				score += 10;
@@ -79,7 +80,7 @@ public class Run
 		{
 			if (e.getValue().equals(p))
 			{
-				score += Math.abs(x-e.getKey().x) + Math.abs(y-e.getKey().y);
+				score += Math.min(30 - (Math.abs(x-e.getKey().x) + Math.abs(y-e.getKey().y)), 25);
 			}
 		}
 		return score-50;
