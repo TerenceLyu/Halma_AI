@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.io.*;
+import java.sql.Time;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -11,8 +12,8 @@ import java.util.stream.Collectors;
  */
 public class Run
 {
-	public final static int SIZE = 16;
-	public final static int DEPTH = 4;
+	final static int SIZE = 16;
+	final static int DEPTH = 2;
 	final static Point[] bBase={new Point(0,0), new Point(1,0), new Point(2,0),
 			new Point(3,0), new Point(4,0), new Point(0,1), new Point(1,1),
 			new Point(2,1), new Point(3,1), new Point(4,1), new Point(0,2),
@@ -23,8 +24,10 @@ public class Run
 			new Point(13,14), new Point(12,14), new Point(11,14), new Point(15,13),
 			new Point(14,13), new Point(13,13), new Point(12,13), new Point(15,12),
 			new Point(14,12), new Point(13,12), new Point(15,11), new Point(14,11)};
+	static long time = System.currentTimeMillis();
 	public static void main(String[] args) throws Exception
 	{
+//		long time = System.currentTimeMillis();
 		BufferedReader input = new BufferedReader(new FileReader("input.txt"));
 		String mode = input.readLine();
 		int player = (input.readLine().equals("BLACK")) ? 0:1;
@@ -36,6 +39,9 @@ public class Run
 		}
 		
 		HashMap<Point, Integer> board = buildBoard(charBoard);
+		ArrayList<Point> nextMove = treeSearch(board, player);
+		System.out.println(nextMove.stream().map(Objects::toString).collect(Collectors.joining()));
+		
 //		System.out.println(eval(board, 'B'));
 //		System.out.println(eval(board, 'W'));
 
@@ -58,18 +64,23 @@ public class Run
 		{
 			if (e.getValue() == player)
 			{
+				System.out.println(max);
+				System.out.println(System.currentTimeMillis()-time+"ms");
 				ArrayList<ArrayList<Point>> moves = generateMove(board, e.getKey(), player);
 				for (ArrayList<Point> move:moves)
 				{
 					HashMap<Point, Integer> nBoard = (HashMap<Point, Integer>)board.clone();
 					nBoard.put(move.get(move.size()-1), board.get(move.get(0)));
 					nBoard.remove(move.get(0));
+
+					
 					int value = recSearch(nBoard, (player+1)%2, 0, max, 10000);
 					if (value>max)
 					{
 						max = value;
 						nextMove = move;
 					}
+					
 				}
 			}
 		}
@@ -86,11 +97,14 @@ public class Run
 				for (ArrayList<Point> move:moves)
 				{
 					HashMap<Point, Integer> nBoard = (HashMap<Point, Integer>)board.clone();
+//					board.remove(e.getKey());
+//					board.put(move.get(move.size()-1), player);
 					nBoard.put(move.get(move.size()-1), board.get(move.get(0)));
 					nBoard.remove(move.get(0));
 					//check if we are at leaf
 					if (level == DEPTH)
 					{
+//						System.out.println("leaf");
 						if (level%2 == 0)
 						{
 							//max level
@@ -128,6 +142,9 @@ public class Run
 							return value;
 						}
 					}
+//					board.remove(move.get(move.size()-1));
+//					board.put(e.getKey(), player);
+					
 				}
 			}
 		}
