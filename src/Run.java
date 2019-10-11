@@ -58,10 +58,6 @@ public class Run
 		ArrayList<Point> nextMove = treeSearch(player);
 		System.out.println(nextMove);
 		
-//		System.out.println(eval(board, 'B'));
-//		System.out.println(eval(board, 'W'));
-
-		
 		if (nextMove.size()==2&&Math.abs(nextMove.get(0).x - nextMove.get(1).x) + Math.abs(nextMove.get(0).y - nextMove.get(1).y) <=2)
 		{
 			output("E", nextMove);
@@ -72,20 +68,7 @@ public class Run
 		System.out.println((System.currentTimeMillis()-time)/1000.0+"s");
 		
 	}
-	private static void output(String s, ArrayList<Point> nextMove) throws Exception
-	{
-		BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
-		
-		for (int i = 0; i < nextMove.size()-1; i++)
-		{
-			writer.write(s);
-			writer.write(" "+nextMove.get(i).x+","+nextMove.get(i).y);
-			writer.write(" "+nextMove.get(i+1).x+","+nextMove.get(i+1).y + "\n");
-		}
-		
-		writer.close();
-		
-	}
+	
 	private static ArrayList<Point> treeSearch(int player)
 	{
 		int max = -10000;
@@ -95,7 +78,7 @@ public class Run
 		for (Point p:pieces)
 		{
 //			System.out.println(max);
-			System.out.println((System.currentTimeMillis()-time)/1000.0+"s");
+//			System.out.println((System.currentTimeMillis()-time)/1000.0+"s");
 			ArrayList<ArrayList<Point>> moves = generateMove(p);
 //			System.out.println(p);
 //			System.out.println(moves);
@@ -182,31 +165,6 @@ public class Run
 			}
 			return value;
 		}
-	}
-	private static boolean checkWin(int player)
-	{
-		Set<Point> base = (player == 0) ? wSet:bSet;
-		ArrayList<Point> myPieces = (player==0) ? bPieces : wPieces;
-		ArrayList<Point> oppoPieces = (player==0) ? wPieces : bPieces;
-		int count = 0;
-		for (Point p:myPieces)
-		{
-			if (base.contains(p))
-			{
-				count++;
-			}
-		}
-		if (count==0){
-			return false;
-		}
-		for (Point p:oppoPieces)
-		{
-			if (base.contains(p))
-			{
-				count++;
-			}
-		}
-		return count==19;
 	}
 	private static int eval(int player)
 	{
@@ -325,6 +283,45 @@ public class Run
 			}
 		}
 	}
+	private static void output(String s, ArrayList<Point> nextMove) throws Exception
+	{
+		BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
+		
+		for (int i = 0; i < nextMove.size()-1; i++)
+		{
+			writer.write(s);
+			writer.write(" "+nextMove.get(i).x+","+nextMove.get(i).y);
+			writer.write(" "+nextMove.get(i+1).x+","+nextMove.get(i+1).y + "\n");
+		}
+		
+		writer.close();
+		
+	}
+	private static boolean checkWin(int player)
+	{
+		Set<Point> base = (player == 0) ? wSet:bSet;
+		ArrayList<Point> myPieces = (player==0) ? bPieces : wPieces;
+		ArrayList<Point> oppoPieces = (player==0) ? wPieces : bPieces;
+		int count = 0;
+		for (Point p:myPieces)
+		{
+			if (base.contains(p))
+			{
+				count++;
+			}
+		}
+		if (count==0){
+			return false;
+		}
+		for (Point p:oppoPieces)
+		{
+			if (base.contains(p))
+			{
+				count++;
+			}
+		}
+		return count==19;
+	}
 	private static void buildBoard(char[][] cBoard)
 	{
 		for (int i = 0; i < SIZE; i++)
@@ -344,34 +341,3 @@ public class Run
 		}
 	}
 }
-//class Piece
-//{
-//	Point location;
-//
-//	public Piece(Point location, int player)
-//	{
-//		this.location = location;
-//	}
-//
-//	@Override
-//	public int hashCode()
-//	{
-//		return this.location.hashCode();
-//	}
-//
-//	@Override
-//	public boolean equals(Object obj)
-//	{
-//		Piece other = (Piece) obj;
-//		return this.location.equals(other.location);
-//	}
-//
-//	@Override
-//	public String toString()
-//	{
-//		return this.location.toString();
-//	}
-//}
-//class Board
-//{
-//}
