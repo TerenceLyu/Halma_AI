@@ -117,8 +117,9 @@ public class Run
 		ArrayList<ArrayList<Point>> moves;
 		if (maxOrMin)
 		{
+			//at max level
 			int value = -1000000;
-			pieces = (player==0) ? bPieces:wPieces;
+			pieces = getPoints(player, bPieces, wPieces);
 			for (Point p:pieces)
 			{
 				moves = generateMove(p, player);
@@ -128,12 +129,7 @@ public class Run
 					if (checkWin(player))
 					{
 						p.setLocation(move.get(0));
-						return 9999-level;
-					}
-					if (checkWin((player+1)%2))
-					{
-						p.setLocation(move.get(0));
-						return -9999+level;
+						return 99999-level;
 					}
 					value = Math.max(value, minimax(player, level-1, alpha, beta, false));
 					alpha = Math.max(alpha, value);
@@ -147,14 +143,20 @@ public class Run
 			return value;
 		}else
 		{
+			//at min level
 			int value = 1000000;
-			pieces = (player==0) ? wPieces:bPieces;
+			pieces = getPoints(player, wPieces, bPieces);
 			for (Point p:pieces)
 			{
 				moves = generateMove(p, player);
 				for (ArrayList<Point> move:moves)
 				{
 					p.setLocation(move.get(move.size()-1));
+					if (checkWin((player+1)%2))
+					{
+						p.setLocation(move.get(0));
+						return -99999+level;
+					}
 					value = Math.min(value, minimax(player, level-1, alpha, beta, true));
 					beta = Math.min(beta, value);
 					p.setLocation(move.get(0));
@@ -166,6 +168,25 @@ public class Run
 			}
 			return value;
 		}
+	}
+
+	private static ArrayList<Point> getPoints(int player, ArrayList<Point> wPieces, ArrayList<Point> bPieces)
+	{
+		ArrayList<Point> pieces = (player==0) ? wPieces : bPieces;
+		ArrayList<Point> temp = new ArrayList<>();
+		Set<Point> base = (player==0) ? bSet:wSet;
+		for (Point piece : pieces)
+		{
+			if (base.contains(piece))
+			{
+				temp.add(piece);
+			}
+		}
+		if (temp.size()!=0)
+		{
+			pieces = temp;
+		}
+		return pieces;
 	}
 	private static int eval(int player)
 	{
