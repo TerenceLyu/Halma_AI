@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class Run
 {
 	final static int SIZE = 16;
-	static int DEPTH = 4;
+	static int DEPTH = 2;
 	final static Point[] bBase={new Point(0,0), new Point(1,0), new Point(2,0),
 			new Point(3,0), new Point(4,0), new Point(0,1), new Point(1,1),
 			new Point(2,1), new Point(3,1), new Point(4,1), new Point(0,2),
@@ -34,15 +34,17 @@ public class Run
 //		long time = System.currentTimeMillis();
 		BufferedReader input = new BufferedReader(new FileReader("input.txt"));
 		String mode = input.readLine();
+//		black is 0 and white is 1
 		int player = (input.readLine().equals("BLACK")) ? 0:1;
 		double timeLeft = Double.parseDouble(input.readLine());
 		if (mode.equals("SINGLE"))
 		{
-			DEPTH = (int) timeLeft/10 + 2;
+			DEPTH = (int) timeLeft/10 + 3;
 		}else
 		{
-			DEPTH = (int) timeLeft/100 + 2;
+			DEPTH = (int) timeLeft/100 + 3;
 		}
+		System.out.println(DEPTH);
 		char[][] charBoard = new char[SIZE][SIZE];
 		for (int i = 0; i < SIZE; i++)
 		{
@@ -68,7 +70,6 @@ public class Run
 		System.out.println((System.currentTimeMillis()-time)/1000.0+"s");
 		
 	}
-	
 	private static ArrayList<Point> treeSearch(int player)
 	{
 		int max = -10000;
@@ -79,7 +80,7 @@ public class Run
 		{
 //			System.out.println(max);
 //			System.out.println((System.currentTimeMillis()-time)/1000.0+"s");
-			ArrayList<ArrayList<Point>> moves = generateMove(p);
+			ArrayList<ArrayList<Point>> moves = generateMove(p, player);
 //			System.out.println(p);
 //			System.out.println(moves);
 //			System.out.println(pieces);
@@ -120,7 +121,7 @@ public class Run
 			pieces = (player==0) ? bPieces:wPieces;
 			for (Point p:pieces)
 			{
-				moves = generateMove(p);
+				moves = generateMove(p, player);
 				for (ArrayList<Point> move:moves)
 				{
 					p.setLocation(move.get(move.size()-1));
@@ -150,7 +151,7 @@ public class Run
 			pieces = (player==0) ? wPieces:bPieces;
 			for (Point p:pieces)
 			{
-				moves = generateMove(p);
+				moves = generateMove(p, player);
 				for (ArrayList<Point> move:moves)
 				{
 					p.setLocation(move.get(move.size()-1));
@@ -215,18 +216,25 @@ public class Run
 		}
 		return score;
 	}
-	private static ArrayList<ArrayList<Point>> generateMove(Point piece)
+	private static ArrayList<ArrayList<Point>> generateMove(Point piece, int player)
 	{
 		ArrayList<ArrayList<Point>> listsOfMoves = new ArrayList<>();
-		for (int i = -1; i < 2; i++)
+		for (int i = 0; i < 2; i++) 
 		{
-			for (int j = -1; j < 2; j++)
+			for (int j = 0; j < 2; j++) 
 			{
 				if (i!=0||j!=0)
 				{
-					if (piece.x + i<SIZE&&piece.x + i>=0&&piece.y + j<SIZE&&piece.y + j>=0)
+					Point target;
+					if (player == 0)
 					{
-						Point target = new Point(piece.x + i, piece.y + j);
+						target = new Point(piece.x + i, piece.y + j);
+					}else
+					{
+						target = new Point(piece.x - i, piece.y - j);
+					}
+					if (target.x<SIZE && target.x>=0 && target.y<SIZE && piece.y + j>=0)
+					{
 						if (!bPieces.contains(target)&&!wPieces.contains(target))
 						{
 							//regular moves
@@ -237,9 +245,18 @@ public class Run
 						}else
 						{
 							//check if a hop is possible
-							if (piece.x + 2*i<SIZE&&piece.x + 2*i>=0&&piece.y + 2*j<SIZE&&piece.y + 2*j>=0)
+
+							Point hop;
+							if (player==0)
 							{
-								Point hop = new Point(piece.x + 2*i, piece.y + 2*j);
+								hop = new Point(piece.x + 2*i, piece.y + 2*j);
+							}else
+							{
+								hop = new Point(piece.x - 2*i, piece.y - 2*j);
+							}
+							if (hop.x<SIZE && hop.x>=0 && hop.y<SIZE && hop.y>=0)
+							{
+
 								if (!bPieces.contains(hop)&&!wPieces.contains(hop))
 								{
 									ArrayList<Point> moves = new ArrayList<>();
@@ -247,36 +264,45 @@ public class Run
 									moves.add(hop);
 									listsOfMoves.add(moves);
 //									System.out.println(moves);
-									continousHop(listsOfMoves, moves);
+									continousHop(listsOfMoves, moves, player);
 								}
 							}
 						}
 					}
-					
 				}
 			}
 		}
 		return listsOfMoves;
 	}
-	private static void continousHop(ArrayList<ArrayList<Point>> LOM, ArrayList<Point> LM)
+	private static void continousHop(ArrayList<ArrayList<Point>> LOM, ArrayList<Point> LM, int player)
 	{
 		Point current = LM.get(LM.size()-1);
-		for (int i = -1; i < 2; i++)
+		for (int i = 0; i < 2; i++)
 		{
-			for (int j = -1; j < 2; j++)
+			for (int j = 0; j < 2; j++)
 			{
-				if (current.x + 2*i<SIZE&&current.x + 2*i>=0&&current.y + 2*j<SIZE&&current.y + 2*j>=0)
+				Point p, hop;
+				if (player == 0)
 				{
-					Point p = new Point(current.x-i, current.y-j);
-					if (bPieces.contains(p)||wPieces.contains(p)){
-						Point hop = new Point(current.x-2*i, current.y-2*j);
+					p = new Point(current.x+i, current.y+j);
+					hop = new Point(current.x+2*i, current.y+2*j);
+				}else
+				{
+					p = new Point(current.x-i, current.y-j);
+					hop = new Point(current.x-2*i, current.y-2*j);
+				}
+
+				if (hop.x<SIZE&&hop.x>=0&&hop.y<SIZE&&hop.y>=0)
+				{
+					if (bPieces.contains(p)||wPieces.contains(p))
+					{
 						if (!bPieces.contains(hop)&&!wPieces.contains(hop) && !LM.contains(hop))
 						{
 							ArrayList<Point> move = (ArrayList<Point>)LM.clone();
 							move.add(hop);
 //							System.out.println(move.toString());
 							LOM.add(move);
-							continousHop(LOM, move);
+							continousHop(LOM, move, player);
 						}
 					}
 				}
